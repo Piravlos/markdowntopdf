@@ -1,0 +1,192 @@
+/* General Layout */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: #333;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+header {
+  background: #24292e;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  padding: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.editor-section,
+.preview-section {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.editor-section h2,
+.preview-header h2 {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background: #f6f8fa;
+  border-bottom: 1px solid #e1e4e8;
+  font-size: 1rem;
+}
+
+/* Editor */
+#markdown-input {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: none;
+  padding: 1rem;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Preview */
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #f6f8fa;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+#preview {
+  padding: 1rem;
+  overflow: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+button#download-btn {
+  background: #2ea44f;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+button#download-btn:hover {
+  background: #22863a;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #fff;
+  font-size: 0.9rem;
+  border-top: 1px solid #e1e4e8;
+}
+
+footer a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Markdown Styles (override as needed) */
+#preview h1 { font-size: 2rem; }
+#preview h2 { font-size: 1.5rem; }
+#preview h3 { font-size: 1.25rem; }
+#preview pre {
+  background: #f6f8fa;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#preview table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+#preview th, #preview td {
+  padding: 0.35rem 0.65rem;
+  line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+}
+#preview th {
+  background: #f6f8fa;
+  font-weight: 600;
+}
+
+/* Print Styles for PDF */
+@media print {
+  body { margin: 0; }
+  header, footer, #download-btn { display: none !important; }
+  main { padding: 0; }
+  #preview {
+    max-width: initial;
+  }
+  #preview table {
+    table-layout: auto;
+  }
+  #preview th,
+  #preview td {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+    line-height: 1.25;
+  }
+  #preview h1,
+  #preview h2,
+  #preview h3,
+  #preview h4,
+  #preview h5,
+  #preview h6,
+  #preview p,
+  #preview blockquote,
+  #preview pre,
+  #preview table,
+  #preview tr,
+  #preview ul,
+  #preview ol,
+  #preview li {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+  #preview h1,
+  #preview h2,
+  #preview h3,
+  #preview h4,
+  #preview h5,
+  #preview h6 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+}
+
+.keep-together {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+} 

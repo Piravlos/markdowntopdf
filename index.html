@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Markdown ➜ PDF Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <!-- Highlight.js theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" />
+</head>
+<body>
+  <header>
+    <h1>Markdown ➜ PDF Converter</h1>
+  </header>
+  <main>
+    <section class="editor-section">
+      <h2>Markdown Input</h2>
+      <textarea id="markdown-input" placeholder="Type or paste your Markdown here..."></textarea>
+    </section>
+
+    <section class="preview-section">
+      <div class="preview-header">
+        <h2>Preview</h2>
+        <button id="download-btn">Download PDF</button>
+      </div>
+      <div id="preview" class="preview-content"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built with <span aria-label="love">❤️</span> using <a href="https://markdown-it.github.io/" target="_blank">markdown-it</a> &amp; <a href="https://github.com/eKoopmans/html2pdf.js" target="_blank">html2pdf.js</a>.</p>
+  </footer>
+
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-footnote/dist/markdown-it-footnote.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-task-lists/dist/markdown-it-task-lists.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- App Logic -->
+  <script src="app.js"></script>
+</body>
+</html> 
