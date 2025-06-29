@@ -67,23 +67,36 @@ $downloadBtn.addEventListener('click', () => {
   // Clone preview to manipulate structure for better page breaks
   const printable = $preview.cloneNode(true);
 
+  // Remove all horizontal rules from the printable version
+  printable.querySelectorAll('hr').forEach(hr => hr.remove());
+
   // Wrap heading + first following sibling in .keep-together
   const headings = printable.querySelectorAll('h1, h2, h3, h4, h5, h6');
   headings.forEach(h => {
-    // Skip if already wrapped (in case of nested processing)
+    // Skip if already wrapped
     if (h.parentElement && h.parentElement.classList.contains('keep-together')) return;
 
-    const firstContentEl = h.nextElementSibling; // capture before moving
     const wrapper = document.createElement('div');
     wrapper.className = 'keep-together';
-
-    // Insert wrapper before heading in DOM tree
     h.parentNode.insertBefore(wrapper, h);
 
-    // Move heading and first content element into wrapper
+    // Move heading into wrapper
     wrapper.appendChild(h);
-    if (firstContentEl) {
-      wrapper.appendChild(firstContentEl);
+
+    // Check for a following element
+    const firstEl = wrapper.nextElementSibling;
+    if (firstEl) {
+      // If it's an HR, grab it AND the next element
+      if (firstEl.tagName === 'HR') {
+        wrapper.appendChild(firstEl);
+        const secondEl = wrapper.nextElementSibling;
+        if (secondEl) {
+          wrapper.appendChild(secondEl);
+        }
+      } else {
+        // Otherwise, just grab the first element
+        wrapper.appendChild(firstEl);
+      }
     }
   });
 
@@ -101,7 +114,12 @@ $downloadBtn.addEventListener('click', () => {
     margin:       10,
     filename:     'document.pdf',
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
+    html2canvas:  {
+      scale: 2,
+      useCORS: true,
+      // Add a small buffer to prevent horizontal text cutoff
+      windowWidth: printable.scrollWidth + 20
+    },
     jsPDF:        hasTable
       ? { unit: 'mm', format: 'a3', orientation: 'landscape' }
       : { unit: 'mm', format: 'a4', orientation: 'portrait' },

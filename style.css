@@ -26,6 +26,8 @@ body {
   flex-direction: column;
   min-height: 100vh;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -199,35 +201,17 @@ footer a:hover {
     padding: 0.3rem 0.5rem;
     line-height: 1.25;
   }
-  #preview h1,
-  #preview h2,
-  #preview h3,
-  #preview h4,
-  #preview h5,
-  #preview h6,
-  #preview p,
-  #preview blockquote,
-  #preview pre,
-  #preview table,
-  #preview tr,
-  #preview ul,
-  #preview ol,
-  #preview li {
-    break-inside: avoid-page;
-    page-break-inside: avoid;
-  }
-  #preview h1,
-  #preview h2,
-  #preview h3,
-  #preview h4,
-  #preview h5,
-  #preview h6 {
-    break-after: avoid-page;
-    page-break-after: avoid;
-  }
 }
 
+/* This is the primary rule for page break control.
+   It prevents the wrapper div (containing a heading and its content)
+   from splitting across pages. */
 .keep-together {
   break-inside: avoid-page;
   page-break-inside: avoid;
+}
+
+/* --- PREVIEW STYLES --- */
+#preview p, #preview li, #preview blockquote {
+  position: relative; /* Establish positioning context for renderer */
 } 
