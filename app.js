@@ -87,13 +87,24 @@ $downloadBtn.addEventListener('click', () => {
     }
   });
 
+  // Decide on page size: wide A3 for tables, A4 portrait otherwise
+  const hasTable = printable.querySelector('table') !== null;
+
+  // Optional visual tweak: constrain width for text-only documents
+  if (!hasTable) {
+    printable.style.maxWidth = '180mm';
+    printable.style.margin = '0 auto';
+  }
+
   // Use html2pdf to convert printable element to PDF
   const opt = {
-    margin:       10,                      // uniform margin in mm
+    margin:       10,
     filename:     'document.pdf',
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'mm', format: 'a3', orientation: 'landscape' },
+    jsPDF:        hasTable
+      ? { unit: 'mm', format: 'a3', orientation: 'landscape' }
+      : { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak:    { mode: ['avoid-all', 'css'] }
   };
 
