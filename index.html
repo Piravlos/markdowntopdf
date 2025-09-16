@@ -19,13 +19,26 @@
   <main>
     <section class="editor-section">
       <h2>Markdown Input</h2>
+      <div class="editor-toolbar">
+        <input type="file" id="file-input" accept=".md,.markdown,.txt,text/markdown" hidden>
+        <button type="button" id="import-btn" class="btn">Import Markdown</button>
+        <button type="button" id="clear-btn" class="btn">Clear</button>
+        <span id="autosave-indicator" aria-live="polite"></span>
+      </div>
       <textarea id="markdown-input" placeholder="Type or paste your Markdown here..."></textarea>
     </section>
 
     <section class="preview-section">
       <div class="preview-header">
-        <h2>Preview</h2>
-        <button id="download-btn">Download PDF</button>
+        <div class="preview-title">
+          <h2>Preview</h2>
+          <span id="document-stats" aria-live="polite">0 words · 0 characters</span>
+        </div>
+        <div class="preview-actions">
+          <label class="visually-hidden" for="filename-input">PDF file name</label>
+          <input id="filename-input" type="text" placeholder="document.pdf" autocomplete="off">
+          <button type="button" id="download-btn" class="btn btn-primary">Download PDF</button>
+        </div>
       </div>
       <div id="preview" class="preview-content"></div>
     </section>
