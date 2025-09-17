@@ -238,6 +238,8 @@ function handleDownload() {
     printable.style.margin = '0 auto';
   }
 
+  const pdfFormat = hasTable ? 'a3' : 'a4';
+
   const opt = {
     margin:       10,
     filename:     buildFilename(),
@@ -247,9 +249,7 @@ function handleDownload() {
       useCORS: true,
       windowWidth: printable.scrollWidth + 20
     },
-    jsPDF:        hasTable
-      ? { unit: 'mm', format: 'a3', orientation: 'landscape' }
-      : { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    jsPDF:        { unit: 'mm', format: pdfFormat, orientation: 'landscape' },
     pagebreak:    { mode: ['avoid-all', 'css'] }
   };
 
