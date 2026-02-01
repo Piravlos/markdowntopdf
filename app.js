@@ -210,6 +210,9 @@ function buildFilename() {
 }
 
 function handleDownload() {
+  // Measure width from the live DOM element before cloning (detached nodes return 0)
+  const liveWidth = $preview.scrollWidth;
+
   const printable = $preview.cloneNode(true);
 
   const headings = printable.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -245,10 +248,10 @@ function handleDownload() {
     html2canvas:  {
       scale: 2,
       useCORS: true,
-      windowWidth: printable.scrollWidth + 20
+      windowWidth: liveWidth + 20
     },
     jsPDF:        { unit: 'mm', format: pdfFormat, orientation: pdfOrientation },
-    pagebreak:    { mode: ['avoid-all', 'css'] }
+    pagebreak:    { mode: ['css', 'legacy'], avoid: ['.keep-together', 'tr', 'pre'] }
   };
 
   $downloadBtn.disabled = true;
