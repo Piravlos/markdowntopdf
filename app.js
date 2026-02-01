@@ -241,7 +241,7 @@ function handleDownload() {
       useCORS: true
     },
     jsPDF:        { unit: 'mm', format: pdfFormat, orientation: pdfOrientation },
-    pagebreak:    { mode: ['css', 'legacy'], avoid: ['.keep-together', 'tr', 'pre'] }
+    pagebreak:    { mode: ['css', 'legacy'], avoid: ['.keep-together', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'li', 'blockquote', 'tr', 'pre'] }
   };
 
   $downloadBtn.disabled = true;
