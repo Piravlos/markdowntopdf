@@ -9,12 +9,17 @@
   --bg: #f8f9fa;
   --surface: #ffffff;
   --border: #dee2e6;
+  --border-light: #e1e4e8;
+  --surface-alt: #f6f8fa;
+  --surface-alt2: #f8f9fb;
+  --surface-hover: #f1f3f5;
 
   --text-primary: #212529;
   --text-secondary: #495057;
 
   --accent: #007bff;
   --accent-dark: #0056b3;
+  --accent-link: #0366d6;
 }
 
 body {
@@ -62,8 +67,8 @@ main {
 .preview-header h2 {
   margin: 0;
   padding: 0.5rem 1rem;
-  background: #f6f8fa;
-  border-bottom: 1px solid #e1e4e8;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border-light);
   font-size: 1rem;
 }
 
@@ -73,8 +78,8 @@ main {
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  background: #f8f9fb;
-  border-bottom: 1px solid #e1e4e8;
+  background: var(--surface-alt2);
+  border-bottom: 1px solid var(--border-light);
   flex-wrap: wrap;
 }
 
@@ -102,8 +107,8 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  background: #f6f8fa;
-  border-bottom: 1px solid #e1e4e8;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border-light);
 }
 
 #preview {
@@ -128,7 +133,7 @@ main {
 }
 
 .btn:hover {
-  background: #f1f3f5;
+  background: var(--surface-hover);
 }
 
 .btn-primary {
@@ -190,13 +195,13 @@ main {
 footer {
   text-align: center;
   padding: 1rem;
-  background: #fff;
+  background: var(--surface);
   font-size: 0.9rem;
-  border-top: 1px solid #e1e4e8;
+  border-top: 1px solid var(--border-light);
 }
 
 footer a {
-  color: #0366d6;
+  color: var(--accent-link);
   text-decoration: none;
 }
 
@@ -232,7 +237,7 @@ footer a:hover {
 }
 
 #preview pre {
-  background: #f6f8fa;
+  background: var(--surface-alt);
   padding: 1rem;
   overflow: auto;
   border-radius: 6px;
@@ -255,7 +260,7 @@ footer a:hover {
   vertical-align: top;
 }
 #preview th {
-  background: #f1f3f5;
+  background: var(--surface-hover);
   font-weight: 600;
 }
 
@@ -284,11 +289,6 @@ footer a:hover {
 .keep-together {
   break-inside: avoid-page;
   page-break-inside: avoid;
-}
-
-/* --- PREVIEW STYLES --- */
-#preview p, #preview li, #preview blockquote {
-  position: relative; /* Establish positioning context for renderer */
 }
 
 @media (max-width: 900px) {

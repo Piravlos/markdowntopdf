@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:data.jsdelivr.com)",
+      "WebFetch(domain:api.cdnjs.com)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(curl:*)",
+      "Bash(openssl dgst:*)",
+      "Bash(openssl base64:*)"
+    ]
+  }
+}

@@ -2,14 +2,16 @@
 
 // Initialize markdown-it with plugins & syntax highlighting
 const md = window.markdownit({
-  html: true,          // Enable HTML tags in source
+  html: false,         // Disable raw HTML to prevent XSS
   linkify: true,       // Autoconvert URL-like text to links
   typographer: true,   // Enable smart quotes and other typographic replacements
   highlight: function (str, lang) {
     if (lang && window.hljs.getLanguage(lang)) {
       try {
         return '<pre class="hljs"><code>' + window.hljs.highlight(str, { language: lang, ignoreIllegals: true }).value + '</code></pre>';
-      } catch (__) {}
+      } catch (err) {
+        console.warn('Highlight.js failed for language "' + lang + '":', err);
+      }
     }
     return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
   }
@@ -77,6 +79,8 @@ try {
 }
 
 let autosaveTimer = null;
+let renderTimer = null;
+const RENDER_DELAY = 120;
 
 function setAutosaveMessage(message) {
   if ($autosaveIndicator) {
@@ -122,7 +126,10 @@ function safeRemove(key) {
 
 function renderPreview() {
   const markdownText = $input.value || '';
-  $preview.innerHTML = md.render(markdownText);
+  const rawHtml = md.render(markdownText);
+  $preview.innerHTML = window.DOMPurify
+    ? window.DOMPurify.sanitize(rawHtml, { USE_PROFILES: { html: true } })
+    : rawHtml;
 }
 
 function updateStats() {
@@ -180,7 +187,7 @@ function extractHeading(markdown) {
 
 function sanitizeFilename(name) {
   return name
-    .replace(/[\/:*?"<>|]/g, '')
+    .replace(/[\\/:*?"<>|]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/\.$/, '')
@@ -205,8 +212,6 @@ function buildFilename() {
 function handleDownload() {
   const printable = $preview.cloneNode(true);
 
-  printable.querySelectorAll('hr').forEach(hr => hr.remove());
-
   const headings = printable.querySelectorAll('h1, h2, h3, h4, h5, h6');
   headings.forEach(h => {
     if (h.parentElement && h.parentElement.classList.contains('keep-together')) return;
@@ -214,20 +219,12 @@ function handleDownload() {
     const wrapper = document.createElement('div');
     wrapper.className = 'keep-together';
     h.parentNode.insertBefore(wrapper, h);
-
     wrapper.appendChild(h);
 
-    const firstEl = wrapper.nextElementSibling;
-    if (firstEl) {
-      if (firstEl.tagName === 'HR') {
-        wrapper.appendChild(firstEl);
-        const secondEl = wrapper.nextElementSibling;
-        if (secondEl) {
-          wrapper.appendChild(secondEl);
-        }
-      } else {
-        wrapper.appendChild(firstEl);
-      }
+    // Pull the next sibling into the wrapper so the heading isn't orphaned on a page break
+    const nextEl = wrapper.nextElementSibling;
+    if (nextEl) {
+      wrapper.appendChild(nextEl);
     }
   });
 
@@ -239,6 +236,7 @@ function handleDownload() {
   }
 
   const pdfFormat = hasTable ? 'a3' : 'a4';
+  const pdfOrientation = hasTable ? 'landscape' : 'portrait';
 
   const opt = {
     margin:       10,
@@ -249,11 +247,24 @@ function handleDownload() {
       useCORS: true,
       windowWidth: printable.scrollWidth + 20
     },
-    jsPDF:        { unit: 'mm', format: pdfFormat, orientation: 'landscape' },
+    jsPDF:        { unit: 'mm', format: pdfFormat, orientation: pdfOrientation },
     pagebreak:    { mode: ['avoid-all', 'css'] }
   };
 
-  window.html2pdf().set(opt).from(printable).save();
+  $downloadBtn.disabled = true;
+  $downloadBtn.textContent = 'Generating…';
+
+  window.html2pdf().set(opt).from(printable).save()
+    .then(() => {
+      $downloadBtn.disabled = false;
+      $downloadBtn.textContent = 'Download PDF';
+    })
+    .catch((err) => {
+      console.error('PDF generation failed:', err);
+      $downloadBtn.disabled = false;
+      $downloadBtn.textContent = 'Download PDF';
+      setAutosaveMessage('PDF export failed');
+    });
 }
 
 function handleImport(event) {
@@ -317,7 +328,10 @@ refreshOutput();
 setAutosaveMessage(storageAvailable ? 'Autosave on' : 'Autosave unavailable');
 
 $input.addEventListener('input', () => {
-  refreshOutput();
+  window.clearTimeout(renderTimer);
+  renderTimer = window.setTimeout(() => {
+    refreshOutput();
+  }, RENDER_DELAY);
   scheduleAutosave();
 });
 
