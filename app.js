@@ -210,9 +210,6 @@ function buildFilename() {
 }
 
 function handleDownload() {
-  // Measure width from the live DOM element before cloning (detached nodes return 0)
-  const liveWidth = $preview.scrollWidth;
-
   const printable = $preview.cloneNode(true);
 
   const headings = printable.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -232,12 +229,6 @@ function handleDownload() {
   });
 
   const hasTable = printable.querySelector('table') !== null;
-
-  if (!hasTable) {
-    printable.style.maxWidth = '180mm';
-    printable.style.margin = '0 auto';
-  }
-
   const pdfFormat = hasTable ? 'a3' : 'a4';
   const pdfOrientation = hasTable ? 'landscape' : 'portrait';
 
@@ -247,8 +238,7 @@ function handleDownload() {
     image:        { type: 'jpeg', quality: 0.98 },
     html2canvas:  {
       scale: 2,
-      useCORS: true,
-      windowWidth: liveWidth + 20
+      useCORS: true
     },
     jsPDF:        { unit: 'mm', format: pdfFormat, orientation: pdfOrientation },
     pagebreak:    { mode: ['css', 'legacy'], avoid: ['.keep-together', 'tr', 'pre'] }
